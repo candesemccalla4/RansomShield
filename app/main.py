@@ -1,12 +1,3 @@
-import sys
-import os
-
-sys.path.append(
-    os.path.dirname(
-        os.path.dirname(
-            os.path.abspath(__file__)
-        )
-    )
 """
 RansomShield Main Controller
 
@@ -15,28 +6,40 @@ Launches:
 2. Watchdog File Monitoring System
 """
 
-
+import sys
+import os
 import threading
 
-from gui import start_gui
 
+# Add project folder to Python path
+
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+sys.path.append(PROJECT_ROOT)
+
+
+from gui import start_gui
 from detection.file_monitor import start_monitor
 
 
 
-# Folder monitored by Watchdog
-
-MONITOR_FOLDER = "../test_environment/test_files"
+MONITOR_FOLDER = os.path.join(
+    PROJECT_ROOT,
+    "test_environment",
+    "test_files"
+)
 
 
 
 def start_watchdog():
 
-    """
-    Starts ransomware file monitoring
-    """
-
-    start_monitor(MONITOR_FOLDER)
+    start_monitor(
+        MONITOR_FOLDER
+    )
 
 
 
@@ -55,8 +58,6 @@ def main():
     )
 
 
-    # Start Watchdog in background
-
     monitoring_thread = threading.Thread(
         target=start_watchdog
     )
@@ -67,18 +68,15 @@ def main():
     monitoring_thread.start()
 
 
-
     print(
         "[+] File monitoring activated"
     )
 
 
     print(
-        "[+] Launching security assessment dashboard"
+        "[+] Launching security dashboard"
     )
 
-
-    # Start GUI
 
     start_gui()
 

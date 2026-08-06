@@ -1,22 +1,48 @@
-def calculate_score(
-    antivirus,
-    backup,
-    mfa,
-    monitoring
-):
+from app.assessment_config import SECURITY_CATEGORIES
 
-    score = 0
 
-    if antivirus:
-        score += 20
+def calculate_score(user_selection):
 
-    if backup:
-        score += 30
+    total_score = 0
 
-    if mfa:
-        score += 20
+    category_scores = {}
 
-    if monitoring:
-        score += 30
 
-    return score
+    for category, data in SECURITY_CATEGORIES.items():
+
+        category_score = 0
+
+        for control, details in data["controls"].items():
+
+            selected = user_selection.get(control)
+
+            if selected:
+
+                points = details["options"].get(selected, 0)
+
+                category_score += points
+
+
+        category_scores[category] = category_score
+
+        total_score += category_score
+
+
+    if total_score >= 90:
+        risk = "Excellent Protection"
+
+    elif total_score >= 70:
+        risk = "Moderate Protection"
+
+    elif total_score >= 50:
+        risk = "High Risk"
+
+    else:
+        risk = "Critical Risk"
+
+
+    return {
+        "total_score": total_score,
+        "risk": risk,
+        "categories": category_scores
+    }
