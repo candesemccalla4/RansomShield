@@ -13,7 +13,13 @@ assessment = {
 
     "network_monitoring": "IDS",
 
-    "backup": "Immutable Backup"
+    "backup": "Immutable Backup",
+
+    "incident_response": "Complete IR Plan",
+
+    "containment": "Automated Isolation",
+
+    "security_training": "Training + Phishing Simulation"
 
 }
 
